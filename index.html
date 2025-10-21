@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Swiggy Student Rewards Microsite</title>
+<style>
+:root{
+  --bg:#FFF8E7;
+  --card:#ffffff;
+  --muted:#555555;
+  --accent:#FF6F00;
+  --glass: rgba(0,0,0,0.05);
+  --glass-2: rgba(0,0,0,0.03);
+  --success: #25a86a;
+  --danger: #f43f5e;
+  --max-width:1400px;
+  font-family:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%,#FFEFD0 100%);color:#000;display:flex;justify-content:center;padding:18px;}
+.wrap{width:100%; max-width:var(--max-width);}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap;}
+.brand{display:flex;gap:12px;align-items:center;}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ff9a3c);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;box-shadow:0 6px 18px rgba(255,111,0,0.2);}
+h1{font-size:20px;margin:0}
+p.lead{margin:0;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.tab{padding:10px 16px;background:var(--glass-2);border-radius:12px;cursor:pointer;font-weight:600;}
+.tab.active{background:linear-gradient(90deg,var(--accent),#ff8a3c);color:#fff;box-shadow:0 4px 12px rgba(255,111,0,0.2);}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.card{background: var(--card); border-radius:14px; padding:16px; border:1px solid rgba(0,0,0,0.08); box-shadow:0 3px 12px rgba(0,0,0,0.05); margin-bottom:18px;}
+.region-selector{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.region-selector button{padding:6px 14px;border-radius:999px;border:none;background:var(--glass-2);cursor:pointer;font-weight:600;}
+.region-selector button.active{background:linear-gradient(90deg,var(--accent),#ff8a3c);color:#fff;box-shadow:0 4px 12px rgba(255,111,0,0.2);}
+.leaderboard-container{display:flex;gap:16px;flex-wrap:wrap;}
+.leaderboard-table{flex:3 1 800px;overflow:auto;max-height:600px;}
+table.leaderboard{width:100%;border-collapse:collapse;font-size:14px;}
+table.leaderboard thead th{text-align:left;color:var(--muted);padding:8px 10px;font-weight:600;font-size:12px;border-bottom:1px dashed rgba(0,0,0,0.1);}
+table.leaderboard tbody tr{transition: transform .12s ease, background .12s ease;}
+table.leaderboard tbody tr:hover{transform: translateY(-3px); background: rgba(255,165,0,0.05);}
+td{padding:12px 10px;vertical-align:middle}
+.avatar{width:44px;height:44px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:linear-gradient(135deg,#ffb37a,#ffa74f);}
+.name small{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+.rank{font-weight:800;font-size:16px;color:var(--accent);}
+.points{font-weight:800;font-size:16px;display:inline-flex;gap:8px;align-items:center;}
+.widget{margin-bottom:12px;padding:16px;border-radius:10px;background:linear-gradient(90deg,#fff3e0,#fff8e7);border:1px solid rgba(0,0,0,0.06);box-shadow:0 3px 8px rgba(0,0,0,0.04);}
+.widget h3{margin:0 0 8px 0;font-size:16px;text-align:center;}
+.widget .small{font-size:13px;color:var(--muted);text-align:left;line-height:1.4;}
+.highlight{font-size:24px;font-weight:800;margin:8px 0;}
+.swift-card{display:flex;gap:12px;align-items:center;padding:20px;border-radius:14px;background:linear-gradient(90deg,#ff8a3c,#ffb37a);color:#fff;box-shadow:0 4px 12px rgba(255,111,0,0.2);}
+.calendar{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;}
+.event-card{background:var(--card);padding:12px;border-radius:12px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.05);}
+.event-card img{width:60px;height:60px;margin-bottom:8px;}
+.discount-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+.discount-card{background:var(--card);padding:12px;border-radius:12px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.05);}
+.discount-card img{width:80px;height:80px;margin-bottom:8px;}
+@media (max-width:1200px){.leaderboard-container{flex-direction:column;}.calendar{grid-template-columns:1fr;}.discount-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">S</div>
+      <div>
+        <h1>Swiggy Student Rewards</h1>
+        <p class="lead">Track your points, discounts & upcoming food fests!</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="leaderboard">🏆 Leaderboard</div>
+    <div class="tab" data-tab="swift">🍔 Swift Pass</div>
+    <div class="tab" data-tab="level">🎖️ Your Level</div>
+    <div class="tab" data-tab="discounts">💰 Special Discounts</div>
+    <div class="tab" data-tab="calendar">📅 Food Fests</div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="tab-content active" id="leaderboard">
+    <div class="card">
+      <div class="region-selector">
+        <button class="active" data-region="mumbai">Mumbai</button>
+        <button data-region="delhi">Delhi NCR</button>
+        <button data-region="bangalore">Bengaluru</button>
+        <button data-region="hyderabad">Hyderabad</button>
+      </div>
+
+      <div class="leaderboard-container">
+        <!-- Leaderboard Table -->
+        <div class="leaderboard-table">
+          <table class="leaderboard">
+            <thead>
+              <tr><th>Rank</th><th>Student</th><th>Points</th><th>Interactions</th></tr>
+            </thead>
+            <tbody id="leaderRows"></tbody>
+          </table>
+        </div>
+
+        <!-- Points & Tips (Top Right) -->
+        <div style="flex:1 1 350px;display:flex;flex-direction:column;gap:16px;">
+          <div class="widget">
+            <h3>💡 How Points Are Earned</h3>
+            <div class="small">
+              🍽️ Orders: 10 pts per order<br/>
+              👥 Group Orders: +5 pts per friend<br/>
+              🎉 Event Participation: 50 pts<br/>
+              📝 Referrals & Reviews: 15 pts
+            </div>
+          </div>
+          <div class="widget">
+            <h3>📌 Leaderboard Tips</h3>
+            <ul class="small" style="margin:0;padding-left:18px">
+              <li>🏠 Hostel leaderboards boost group orders</li>
+              <li>🤝 Ambassador-run challenges increase interactions</li>
+              <li>🎫 Redeem points for fest tickets and discounts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Swift Pass -->
+  <div class="tab-content" id="swift">
+    <div class="swift-card">
+      <div>
+        <h2>Swift Pass</h2>
+        <div class="highlight">₹49/week</div>
+        <div class="highlight">30 free deliveries within 1 km radius!</div>
+      </div>
+      <div>🚀🍕🍔🥗🍟</div>
+    </div>
+  </div>
+
+  <!-- Your Level -->
+  <div class="tab-content" id="level">
+    <div class="card">
+      <h2>🎖️ Your Current Level</h2>
+      <p>Campus Connoisseur 🏆</p>
+      <p>Keep ordering & engaging to reach the next level!</p>
+    </div>
+  </div>
+
+  <!-- Special Discounts -->
+  <div class="tab-content" id="discounts">
+    <div class="discount-grid">
+      <div class="discount-card"><img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"/><h3>20% off Pizza 🍕</h3></div>
+      <div class="discount-card"><img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png"/><h3>15% off Burgers 🍔</h3></div>
+      <div class="discount-card"><img src="https://cdn-icons-png.flaticon.com/512/3075/3075978.png"/><h3>25% off Salads 🥗</h3></div>
+    </div>
+  </div>
+
+  <!-- Calendar / Food Fests -->
+  <div class="tab-content" id="calendar">
+    <div class="calendar">
+      <div class="event-card"><img src="https://em-content.zobj.net/thumbs/240/apple/354/diya-lamp_1f6e1.png"/><h4>🍲 Diwali Dhamaka Fest</h4></div>
+      <div class="event-card"><img src="https://em-content.zobj.net/thumbs/240/apple/354/pongal_1f33e.png"/><h4>🌾 Pongal Feast</h4></div>
+      <div class="event-card"><img src="https://em-content.zobj.net/thumbs/240/apple/354/ramen_1f35c.png"/><h4>🍜 Holi Food Fiesta</h4></div>
+      <div class="event-card"><img src="https://em-content.zobj.net/thumbs/240/apple/354/cupcake_1f9c1.png"/><h4>🎂 Christmas Bake-off</h4></div>
+      <div class="event-card"><img src="https://em-content.zobj.net/thumbs/240/apple/354/hamburger_1f354.png"/><h4>🍔 Independence Day BBQ</h4></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+// Tabs
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Sample leaderboard data (10 students per region)
+const sampleData = {
+  mumbai:[
+    {name:"Aisha Khan",college:"IIT Bombay",points:{week:1200,month:3200,all:9700},interactions:{orders:42,reviews:7}},
+    {name:"Rohit Mehta",college:"St. Xavier's",points:{week:980,month:2150,all:6100},interactions:{orders:36,reviews:5}},
+    {name:"Neha Sharma",college:"SIES College",points:{week:880,month:1720,all:4800},interactions:{orders:30,reviews:10}},
+    {name:"Aditya Joshi",college:"NM College",points:{week:820,month:1600,all:4500},interactions:{orders:28,reviews:8}},
+    {name:"Priya Desai",college:"KJ Somaiya",points:{week:760,month:1500,all:4300},interactions:{orders:25,reviews:5}},
+    {name:"Varun Patil",college:"SP College",points:{week:710,month:1400,all:4000},interactions:{orders:22,reviews:6}},
+    {name:"Sara Khan",college:"St. Xavier's",points:{week:690,month:1350,all:3900},interactions:{orders:20,reviews:7}},
+    {name:"Rohan Iyer",college:"NM College",points:{week:650,month:1280,all:3700},interactions:{orders:19,reviews:6}},
+    {name:"Tanya Rao",college:"SIES College",points:{week:620,month:1200,all:3500},interactions:{orders:18,reviews:5}},
+    {name:"Karan Mehta",college:"KJ Somaiya",points:{week:600,month:1150,all:3400},interactions:{orders:17,reviews:4}}
+  ],
+  delhi:[/* 10 students */], bangalore:[/* 10 students */], hyderabad:[/* 10 students */]
+};
+
+let state={region:'mumbai',range:'week'};
+const leaderRows=document.getElementById('leaderRows');
+
+function renderLeaderboard(){
+  const data=sampleData[state.region];
+  leaderRows.innerHTML='';
+  data.forEach((u,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><strong class="rank">${i+1}</strong></td>
+      <td><div style="display:flex;gap:10px;align-items:center"><div class="avatar">${u.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div><strong>${u.name}</strong><br><small class="muted">${i===0?'Campus Connoisseur •':''} ${u.college}</small></div></div></td>
+      <td>${u.points[state.range]}</td>
+      <td>Orders: ${u.interactions.orders}<br>Reviews: ${u.interactions.reviews}</td>`;
+    leaderRows.appendChild(tr);
+  });
+}
+renderLeaderboard();
+
+// Region buttons
+document.querySelectorAll('.region-selector button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.region-selector button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    state.region=btn.dataset.region;
+    renderLeaderboard();
+  });
+});
+
+// Confetti on scroll
+document.querySelector('.leaderboard-table').addEventListener('scroll',()=>{
+  confetti({particleCount:20,spread:70,origin:{y:0.6}});
+});
+</script>
+</body>
+</html>
